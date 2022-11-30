@@ -32,7 +32,7 @@ const methods = {
             res.status(201).json(savedUser);
 
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: "this user already exist" });
             console.log(error.status, error.message);
         }
     },
