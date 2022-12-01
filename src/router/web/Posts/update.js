@@ -21,13 +21,14 @@ router.patch('/:id/like', async (req, res, next) => {
     res.status(200).json(updatePost);
 });
 router.put('/:id/comment', async (req, res, next) => {
-    const { userId, comment } = req.body;
+    const { userId, comment, fullName, picturePath } = req.body;
     // const post = await Post.findById(req.params.id);
     // post.comments.push({ userId, comment })
     const updatePost = await Post.findByIdAndUpdate(req.params.id,
-        { $push: { comments: { userId, comment } } },
+        { $push: { comments: { id: userId, userName: fullName, comment: comment, picturePath: picturePath } } },
         { new: true }
     );
+
     res.status(200).json(updatePost);
 });
 

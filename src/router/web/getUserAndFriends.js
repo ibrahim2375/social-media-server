@@ -42,7 +42,7 @@ router.get('/:id/friends', async (req, res, next) => {
 
 });
 //add remove friend
-router.get('/:id/:friendId', async (req, res, next) => {
+router.patch('/:id/:friendId', async (req, res, next) => {
     try {
         const { id, friendId } = req.params;
 
@@ -50,7 +50,10 @@ router.get('/:id/:friendId', async (req, res, next) => {
         const friend = await User.findById(friendId);
 
         // check if friend id is exist or not
-        if (user.friends.includes(friendId)) {
+        if (id === friendId) {
+            return res.status(403).json({ msg: 'this process cant be' })
+        }
+        else if (user.friends.includes(friendId)) {
             user.friends = user.friends.filter((id) => id !== friendId);
             friend.friends = friend.friends.filter((id) => id !== id);
         } else {

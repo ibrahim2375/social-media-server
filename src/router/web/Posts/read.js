@@ -7,13 +7,20 @@ const router = express.Router();
 //?://///////////////////////////////READ///////////////////////////////
 // get all posts
 router.get('/', async (req, res, next) => {
-    const posts = await Post.find();
-    res.status(200).json(posts);
+    await Post.find().sort({ createdAt: -1 }).then((result) => {
+        if (!result) {
+            res.status(200).json({ msg: "there is no posts" });
+        }
+        res.status(200).json(result);
+    }).catch((err) => {
+        console.log(err)
+
+    });
 });
 
 //get user posts 
 router.get('/:userId', async (req, res, next) => {
-    const userPosts = await Post.find({ userId: req.params.userId });
+    const userPosts = await Post.find({ userId: req.params.userId }).sort({ createdAt: -1 });
     if (userPosts.length == 0) {
         return res.status(200).json({ msg: "no posts yet" });
     }

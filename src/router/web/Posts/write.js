@@ -26,21 +26,38 @@ router.post('/', upload.single('picture'), async (req, res, next) => {
 
         //file
         const file = req.file;
+        if (!file) {
+            const newPost = new Post({
+                userId,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                location: user.location,
+                description,
+                userPicturePath: user.picturePath,
+                picturePath: null,
+                likes: {},
+                comments: [],
+            })
+            await newPost.save();
+            const post = await Post.find().sort({ createdAt: -1 });
+            res.status(201).json(post);
+        } else {
+            const newPost = new Post({
+                userId,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                location: user.location,
+                description,
+                userPicturePath: user.picturePath,
+                picturePath: file.filename,
+                likes: {},
+                comments: [],
+            })
+            await newPost.save();
+            const post = await Post.find().sort({ createdAt: -1 });;
+            res.status(201).json(post);
+        }
 
-        const newPost = new Post({
-            userId,
-            firstname: user.firstname,
-            lastname: user.lastname,
-            location: user.location,
-            description,
-            userPicturePath: user.picturePath,
-            picturePath: file.filename,
-            likes: {},
-            comments: [],
-        })
-        await newPost.save();
-        const post = await Post.find();
-        res.status(201).json(post);
 
     } catch (e) {
         return res.status(404).json({ msg: e.message });

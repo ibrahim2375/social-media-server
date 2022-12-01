@@ -7,5 +7,7 @@ router.use('/user', require('./getUserAndFriends'));
 router.use('/posts', require('./Posts/read'));
 router.use('/posts/create', require('./Posts/write'));
 router.use('/posts/update', require('./Posts/update'));
+//search  
+router.use('/search', require('./search'));
 
 module.exports = router
